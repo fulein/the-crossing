@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Crossing™ — A 6-Month Transition Container</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a0a2e;
+    --cream: #fdf6ff;
+    --warm-white: #f9f0ff;
+    --gold: #F5A623;
+    --gold-light: #fad88a;
+    --terracotta: #E8405A;
+    --sage: #00B4A0;
+    --deep: #7E2FA0;
+    --deep-dark: #4a1260;
+    --muted: #6b4f82;
+    --coral: #FF6B6B;
+    --teal: #00C9B1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 17px;
+    overflow-x: hidden;
+  }
+
+  /* ── PHOTOS ── */
+  .hero-photo-wrap {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 42%;
+    overflow: hidden;
+    display: none;
+  }
+
+  @media (min-width: 900px) { .hero-photo-wrap { display: block; } }
+
+  .hero-photo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #4a1260 0%, transparent 40%),
+                linear-gradient(to top, #4a1260 0%, transparent 30%);
+    z-index: 1;
+  }
+
+  .hero-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.75;
+  }
+
+  /* Placeholder box style for swappable photos */
+  .photo-placeholder {
+    background: linear-gradient(135deg, rgba(126,47,160,0.15), rgba(0,180,160,0.10));
+    border: 2px dashed rgba(126,47,160,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    padding: 24px;
+  }
+
+  .photo-placeholder span {
+    font-size: 32px;
+    opacity: 0.4;
+  }
+
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .break-photo {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4a1260 0%, #7E2FA0 45%, #00796B 100%);
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 24px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 85% 15%, rgba(245,166,35,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 10% 85%, rgba(0,201,177,0.20) 0%, transparent 55%),
+      radial-gradient(ellipse 35% 40% at 50% 50%, rgba(232,64,90,0.10) 0%, transparent 60%);
+  }
+
+  .hero-inner {
+    max-width: 780px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 1.2s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,240,232,0.75);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.5;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 18px 48px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.35s ease;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold);
+    color: var(--deep);
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 24px; }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .container-wide {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── OPENING STATEMENT ── */
+  .opening {
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .opening-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--deep);
+    max-width: 680px;
+    margin: 0 auto 40px;
+  }
+
+  .opening-text em { font-style: italic; color: var(--terracotta); }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 48px auto;
+  }
+
+  /* ── BODY COPY ── */
+  .body-copy {
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .body-copy strong { font-weight: 500; }
+
+  /* ── FOR YOU SECTION ── */
+  .for-you { background: var(--warm-white); }
+
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--deep);
+    margin-bottom: 48px;
+  }
+
+  .section-heading em { font-style: italic; color: var(--terracotta); }
+
+  .recognition-list {
+    list-style: none;
+    display: grid;
+    gap: 20px;
+  }
+
+  .recognition-list li {
+    padding: 24px 32px;
+    border-left: 3px solid var(--gold-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--deep);
+    transition: border-color 0.3s ease;
+  }
+
+  .recognition-list li:hover { border-color: var(--deep); }
+
+  /* ── STORY SECTION ── */
+  .story { background: linear-gradient(160deg, #4a1260 0%, #7E2FA0 100%); color: var(--cream); }
+
+  .story .section-heading { color: var(--cream); }
+
+  .story .body-copy { color: rgba(245,240,232,0.85); }
+
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--gold);
+    border-left: 3px solid var(--teal);
+    padding: 24px 0 24px 40px;
+    margin: 48px 0;
+  }
+
+  /* ── PROGRAM SECTION ── */
+  .program { background: var(--cream); }
+
+  .arc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3px;
+    margin-top: 48px;
+    background: var(--teal);
+  }
+
+  .arc-card {
+    background: var(--cream);
+    padding: 40px 36px;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  .arc-card:hover { background: var(--warm-white); }
+
+  .arc-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 300;
+    color: rgba(245,166,35,0.25);
+    line-height: 1;
+    position: absolute;
+    top: 24px;
+    right: 28px;
+  }
+
+  .arc-month {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .arc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--deep);
+    margin-bottom: 16px;
+  }
+
+  .arc-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* ── WHAT'S INCLUDED ── */
+  .included { background: var(--warm-white); }
+
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .include-item {
+    padding: 36px;
+    border: 1px solid rgba(126,47,160,0.2);
+    border-top: 3px solid var(--deep);
+    transition: border-color 0.3s ease;
+  }
+
+  .include-item:hover { border-top-color: var(--teal); }
+
+  .include-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .include-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--deep);
+    margin-bottom: 12px;
+  }
+
+  .include-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── INVESTMENT ── */
+  .investment {
+    background: var(--deep);
+    text-align: center;
+  }
+
+  .investment .section-heading { color: var(--cream); margin-bottom: 16px; }
+
+  .price-block {
+    margin: 48px auto;
+    max-width: 600px;
+  }
+
+  .price-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 80px);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .price-sub {
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .price-divider {
+    width: 1px;
+    height: 60px;
+    background: rgba(201,168,76,0.3);
+    margin: 0 auto 48px;
+  }
+
+  .price-plan {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: var(--cream);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .price-plan-detail {
+    font-size: 14px;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 48px;
+  }
+
+  .investment-note {
+    font-size: 14px;
+    color: rgba(245,240,232,0.5);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  /* ── NOT FOR ── */
+  .not-for { background: var(--cream); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--deep);
+  }
+
+  .fit-list {
+    list-style: none;
+    display: grid;
+    gap: 16px;
+  }
+
+  .fit-list li {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .fit-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--deep);
+  }
+
+  /* ── ABOUT ── */
+  .about { background: var(--warm-white); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--deep);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .about-title {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .about-credential {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(126,47,160,0.15);
+    line-height: 1.5;
+  }
+
+  /* ── FAQ ── */
+  .faq { background: var(--cream); }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(126,47,160,0.2);
+    padding: 32px 0;
+  }
+
+  .faq-q {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--deep);
+    margin-bottom: 16px;
+  }
+
+  .faq-a {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ── CLOSING CTA ── */
+  .closing {
+    background: linear-gradient(135deg, #00796B 0%, #7E2FA0 50%, #4a1260 100%);
+    text-align: center;
+    padding: 120px 24px;
+  }
+
+  .closing-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.3;
+    max-width: 680px;
+    margin: 0 auto 24px;
+  }
+
+  .closing-text em { font-style: italic; color: var(--gold); }
+
+  .closing-sub {
+    font-size: 16px;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 48px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 20px 56px;
+    background: var(--gold);
+    color: var(--deep-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.35s ease;
+    margin-bottom: 24px;
+  }
+
+  .btn-primary:hover {
+    background: var(--teal);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-note {
+    display: block;
+    font-size: 13px;
+    color: rgba(245,240,232,0.45);
+    margin-top: 16px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1a0a2e;
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-sub {
+    font-size: 12px;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ── UTIL ── */
+  .text-center { text-align: center; }
+  .mt-8 { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mt-48 { margin-top: 48px; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+
+  <!-- ▼ YOUR PORTRAIT PHOTO — replace src with your image URL or file path -->
+  <div class="hero-photo-wrap">
+    <img
+      src="YOUR_PORTRAIT_PHOTO_URL_HERE"
+      alt="Fulei Ngangmuta"
+      onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\' style=\'height:100%;\'><span>🖼</span><p>Your portrait photo goes here.<br>Replace src= with your image URL.</p></div>'"
+    />
+  </div>
+  <!-- ▲ END PORTRAIT SLOT -->
+  <div class="hero-inner">
+    <p class="hero-eyebrow">A 6-Month 1:1 Transition Container</p>
+    <h1 class="hero-title">The <em>Crossing™</em></h1>
+    <p class="hero-subtitle">For chronically ill, disabled, and neurospicy people who are done figuring out major life transitions alone.</p>
+    <a href="https://calendly.com/fulei/the-crossing" target="_blank" rel="noopener" class="hero-cta">Book Your Discovery Call</a>
+  </div>
+</section>
+
+<!-- ── OPENING ── -->
+<section class="opening">
+  <div class="container">
+    <p class="opening-text">
+      You're not lost.<br>
+      You're not behind.<br>
+      You're <em>between</em> — and that space is asking for more than you were ever taught to give it.
+    </p>
+    <div class="divider"></div>
+    <p class="body-copy" style="max-width:620px; margin: 0 auto; text-align:center; color: var(--muted);">
+      Major life transitions are hard for anyone. For those of us navigating chronic illness, disability, and neurospicy minds — the task list triples, the to-dos become cumbersome, and simply remembering to breathe becomes an act of resistance. You deserve more than white-knuckling it through alone.
+    </p>
+  </div>
+</section>
+
+<!-- ── FOR YOU ── -->
+<section class="for-you">
+  <div class="container">
+    <span class="section-label">This is for you if</span>
+    <h2 class="section-heading">Something in you <em>recognizes</em> this.</h2>
+    <ul class="recognition-list">
+      <li>You're in the middle of a major transition — a move, a career shift, a relationship ending, a diagnosis, a loss — and it's more than you anticipated.</li>
+      <li>You have the insight, the intelligence, and the desire to move through this well. What you're missing is someone to walk alongside you who actually gets the complexity of your body and brain.</li>
+      <li>You're tired of survival strategies that were never built for you. You want something that works for how you actually function — not how you're supposed to.</li>
+      <li>You've been holding it together for everyone else. You want a space that holds you.</li>
+      <li>You're done disappearing into transitions and coming out the other side more depleted than when you started.</li>
+      <li>You want to come out of this chapter <strong>whole</strong>. Not just surviving. Whole.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── STORY ── -->
+<section class="story">
+  <div class="container">
+    <span class="section-label" style="color: var(--gold);">Why this exists</span>
+    <h2 class="section-heading" style="color: var(--cream);">I know this crossing.<br>I've been in it.</h2>
+
+    <p class="body-copy">In nine years I navigated a marriage and a divorce, leaving a steady career, ending business partnerships, completing graduate school, multiple cross-country moves, living abroad for over a year, and the deaths of both of my parents — all while managing a chronic illness that the healthcare system was never designed to accommodate.</p>
+
+    <p class="body-copy">Nobody handed me a map. I built one out of necessity — through every transition that knocked the wind out of me and every time I had to figure out how to get back up without the support I actually needed.</p>
+
+    <div class="pull-quote">
+      "The thing we crave most through these transitions is for them to mount up to something better than we were before. We want stability. We need strategy. And we need someone walking alongside us who doesn't think we're out of our minds."
+    </div>
+
+    <p class="body-copy">I'm a Liberation Strategist, curriculum designer, and transition coach with over a decade of experience building programs, facilitating transformation, and supporting Black, Global Majority, chronically ill, disabled, and neurospicy people through the crossings that change everything. I created The Crossing™ because I needed it and it didn't exist. Now it does.</p>
+  </div>
+</section>
+
+<!-- ── PHOTO BREAK — atmospheric, between story and program arc ── -->
+<div style="position:relative; overflow:hidden; line-height:0;">
+  <!-- ▼ ATMOSPHERIC / STOCK PHOTO — swap src for your preferred image -->
+  <img
+    class="break-photo"
+    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80&auto=format&fit=crop"
+    alt="Landscape — light through water"
+    onerror="this.outerHTML='<div class=\'photo-placeholder\' style=\'height:320px;\'><span>🌊</span><p>Atmospheric stock photo goes here.<br>Water · Light · Texture</p></div>'"
+  />
+  <!-- ▲ END ATMOSPHERIC SLOT -->
+  <div style="position:absolute; inset:0; background: linear-gradient(to bottom, rgba(126,47,160,0.3) 0%, transparent 40%, rgba(245,240,232,0.6) 100%);"></div>
+  <div style="position:absolute; bottom:40px; left:50%; transform:translateX(-50%); text-align:center; z-index:2;">
+    <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(20px,3vw,30px); font-style:italic; color:white; text-shadow: 0 2px 20px rgba(0,0,0,0.5); white-space:nowrap;">"You don't have to have it all figured out. You just have to be ready."</p>
+  </div>
+</div>
+
+<!-- ── PROGRAM ARC ── -->
+<section class="program">
+  <div class="container-wide">
+    <div style="max-width:760px; margin: 0 auto 0;">
+      <span class="section-label">The journey</span>
+      <h2 class="section-heading">Six months.<br>Six <em>intentional</em> chapters.</h2>
+      <p class="body-copy" style="color:var(--muted);">This isn't a program where you show up and receive information. It's a structured, adaptive crossing built around how you actually move — not how productivity culture says you should.</p>
+    </div>
+
+    <div class="arc-grid">
+      <div class="arc-card">
+        <span class="arc-number">01</span>
+        <p class="arc-month">Month One</p>
+        <h3 class="arc-title">Ground</h3>
+        <p class="arc-desc">Map where you actually are — not the story you've been telling about it. Honest assessment without urgency. We name what's here before we plan what's next.</p>
+      </div>
+      <div class="arc-card">
+        <span class="arc-number">02</span>
+        <p class="arc-month">Month Two</p>
+        <h3 class="arc-title">Clear</h3>
+        <p class="arc-desc">Name what's being interrupted, what needs to be released, and what has been silently costing you. Grief is welcome here. So is relief.</p>
+      </div>
+      <div class="arc-card">
+        <span class="arc-number">03</span>
+        <p class="arc-month">Month Three</p>
+        <h3 class="arc-title">Stabilize</h3>
+        <p class="arc-desc">Build rhythms that work for this body and this brain — not borrowed systems designed for someone else. Sustainable pacing, real resourcing, actual support structures.</p>
+      </div>
+      <div class="arc-card">
+        <span class="arc-number">04</span>
+        <p class="arc-month">Month Four</p>
+        <h3 class="arc-title">Strategize</h3>
+        <p class="arc-desc">Design your personalized transition map. Not a rigid linear plan — an adaptive strategy that accounts for uncertainty, chronic illness, and everything that doesn't go as expected.</p>
+      </div>
+      <div class="arc-card">
+        <span class="arc-number">05</span>
+        <p class="arc-month">Month Five</p>
+        <h3 class="arc-title">Move</h3>
+        <p class="arc-desc">First steps into the new chapter — with someone in your corner when it gets hard, when the old survival strategies stop working, and when your body needs you to slow down before you can go forward.</p>
+      </div>
+      <div class="arc-card">
+        <span class="arc-number">06</span>
+        <p class="arc-month">Month Six</p>
+        <h3 class="arc-title">Root</h3>
+        <p class="arc-desc">Integration. Who are you on the other side? What do you carry forward? What gets left behind? Closing this chapter with intention — not just relief that it's over.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INCLUDED ── -->
+<section class="included">
+  <div class="container">
+    <span class="section-label">What's included</span>
+    <h2 class="section-heading">Everything you <em>actually</em> need.</h2>
+
+    <div class="includes-grid">
+      <div class="include-item">
+        <span class="include-icon">◈</span>
+        <h3 class="include-title">24 Weekly 1:1 Sessions</h3>
+        <p class="include-desc">60-minute sessions, every week for six months. Structured enough to move through the arc. Flexible enough to meet you where you actually are that week.</p>
+      </div>
+      <div class="include-item">
+        <span class="include-icon">◈</span>
+        <h3 class="include-title">Between-Session Voice Support</h3>
+        <p class="include-desc">WhatsApp voice note support between sessions — because transitions don't happen on a schedule. Response window: 3x per week. Your questions and moments of clarity don't have to wait.</p>
+      </div>
+      <div class="include-item">
+        <span class="include-icon">◈</span>
+        <h3 class="include-title">Your Personalized Transition Map</h3>
+        <p class="include-desc">A living strategy document — built with you, not for you — that evolves as you do throughout the six months. Not a generic plan. Yours.</p>
+      </div>
+      <div class="include-item">
+        <span class="include-icon">◈</span>
+        <h3 class="include-title">Sacred Disruption™ Resources</h3>
+        <p class="include-desc">Access to curated reflection materials, episode guides, and frameworks from the Sacred Disruption™ body of work — grounded in Disability Justice, Black Feminist Thought, and somatic awareness.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT BECOMES POSSIBLE ── -->
+<section class="investment" id="apply" style="background: linear-gradient(160deg, #4a1260 0%, #7E2FA0 60%, #00796B 100%);">
+  <div class="container text-center">
+    <span class="section-label" style="color: var(--gold);">What becomes possible</span>
+    <h2 class="section-heading" style="color: var(--cream); margin-bottom: 16px;">On the other side<br>of <em>The Crossing™</em></h2>
+    <p style="color: rgba(253,246,255,0.65); font-style:italic; font-family:'Cormorant Garamond',serif; font-size:20px; margin-bottom:64px; max-width:540px; margin-left:auto; margin-right:auto;">This is what six months of real, grounded support makes possible for people like you.</p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:24px; text-align:left; margin-bottom:64px;">
+      <div style="padding:32px; border:1px solid rgba(245,166,35,0.3); border-top: 3px solid var(--gold);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold); margin-bottom:12px;">You stop losing yourself mid-transition.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">You move through change without disappearing into it — whole, not just surviving.</p>
+      </div>
+      <div style="padding:32px; border:1px solid rgba(0,201,177,0.3); border-top: 3px solid var(--teal);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--teal); margin-bottom:12px;">You have a strategy that actually works for your body.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">Not a borrowed system. Not a productivity hack. A map built for how you actually function.</p>
+      </div>
+      <div style="padding:32px; border:1px solid rgba(232,64,90,0.3); border-top: 3px solid var(--coral);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--coral); margin-bottom:12px;">The endless task list stops running you.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">You learn to move with intention and pace instead of reactive exhaustion.</p>
+      </div>
+      <div style="padding:32px; border:1px solid rgba(245,166,35,0.3); border-top: 3px solid var(--gold);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold); margin-bottom:12px;">You close the old chapter on purpose.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">Not dragging it behind you. Not pretending it didn't happen. Done — with intention.</p>
+      </div>
+      <div style="padding:32px; border:1px solid rgba(0,201,177,0.3); border-top: 3px solid var(--teal);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--teal); margin-bottom:12px;">You know who you are on the other side.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">Identity integration, not just task completion. You arrive in the new chapter knowing what you're carrying forward.</p>
+      </div>
+      <div style="padding:32px; border:1px solid rgba(232,64,90,0.3); border-top: 3px solid var(--coral);">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--coral); margin-bottom:12px;">You finally had someone in your corner.</p>
+        <p style="font-size:15px; color:rgba(253,246,255,0.7); line-height:1.7;">Someone who actually understood your intersecting identities, your body, your brain, and your refusal to disappear.</p>
+      </div>
+    </div>
+
+    <!-- Price block -->
+    <div style="margin: 0 auto 56px; max-width:560px; padding: 48px; border: 1px solid rgba(245,166,35,0.3); background: rgba(0,0,0,0.2);">
+      <p style="font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:24px;">The Investment</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(52px,8vw,80px); font-weight:300; color:var(--gold); line-height:1; margin-bottom:8px;">$3,500</p>
+      <p style="font-size:13px; letter-spacing:0.15em; color:rgba(253,246,255,0.55); text-transform:uppercase; margin-bottom:32px;">Paid in full · 6-month container</p>
+      <div style="width:1px; height:40px; background:rgba(245,166,35,0.3); margin:0 auto 32px;"></div>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--cream); font-style:italic; margin-bottom:8px;">Or $600/month for 6 months</p>
+      <p style="font-size:13px; color:rgba(253,246,255,0.5); margin-bottom:0;">Payment plan available · Same full access · No additional fees</p>
+    </div>
+
+    <p style="font-size:13px; color:rgba(253,246,255,0.4); max-width:420px; margin:0 auto 40px; line-height:1.7; font-style:italic; font-family:'Cormorant Garamond',serif;">Spots are intentionally limited. This work requires real presence — and real presence has a capacity.</p>
+
+    <a href="https://calendly.com/fulei/the-crossing" target="_blank" rel="noopener" class="btn-primary" style="background:var(--gold); color:var(--deep-dark);">Book Your Free Discovery Call</a>
+    <span class="btn-note" style="color:rgba(253,246,255,0.45);">30 minutes · No pressure · We'll know together if this is the right fit</span>
+  </div>
+</section>
+
+<!-- ── FIT CHECK ── -->
+<section class="not-for">
+  <div class="container">
+    <span class="section-label">The honest check</span>
+    <h2 class="section-heading">Is this the <em>right</em> fit?</h2>
+
+    <div class="two-col">
+      <div>
+        <h3 class="col-heading" style="color:var(--terracotta);">This isn't the right fit if you —</h3>
+        <ul class="fit-list">
+          <li>Need a rigid, step-by-step program with guaranteed linear outcomes</li>
+          <li>Are still deciding whether a major transition needs to happen</li>
+          <li>Require everything to be certain before you can move</li>
+          <li>Are looking for a therapist — this is coaching, not therapy</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="col-heading" style="color:var(--sage);">This is exactly for you if you —</h3>
+        <ul class="fit-list">
+          <li>Are ready to move through necessary change with real support behind you</li>
+          <li>Want to come out the other side whole, not just surviving</li>
+          <li>Know that great things are possible and you need someone who believes that with you</li>
+          <li>Are chronically ill, disabled, or neurospicy and tired of programs that weren't built for your body or brain</li>
+          <li>Are done with the endless task list and want strategy that actually works for you</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section class="about">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <!-- ▼ YOUR PORTRAIT — this is the most important photo on the page -->
+        <img
+          class="about-photo"
+          src="YOUR_PORTRAIT_PHOTO_URL_HERE"
+          alt="Fulei Ngangmuta — Liberation Strategist & Transition Coach"
+          onerror="this.outerHTML='<div class=\'photo-placeholder about-photo\' style=\'aspect-ratio:3/4;\'><span>📸</span><p>Your portrait photo goes here.<br>Replace src= with your image URL.<br><br><strong>This is the most important<br>photo on the page.</strong></p></div>'"
+        />
+        <!-- ▲ END PORTRAIT SLOT -->
+        <div style="margin-top:24px;">
+          <h3 class="about-name">Fulei Ngangmuta</h3>
+          <p class="about-title">Liberation Strategist<br>& Transition Coach</p>
+          <p class="about-credential">M.S. Global Studies & International Relations — Northeastern University</p>
+          <p class="about-credential">DEI Certificate — University of South Florida</p>
+          <p class="about-credential">Incoming: Integral Counseling Psychology — CIIS, 2026</p>
+          <p class="about-credential">Host: Sacred Disruption™ Podcast</p>
+          <p class="about-credential">Founder: Ilwo Flow Collective</p>
+        </div>
+      </div>
+      <div>
+        <p class="body-copy">I am a Liberation Strategist, curriculum designer, and coach with over a decade of experience designing programs, facilitating transformation, and walking alongside people who are figuring out how to remain whole inside systems that were never built for them.</p>
+        <p class="body-copy">I'm also chronically ill, Black, genderqueer, queer, and a 4/6 Emotional Generator who has navigated more major transitions in the last decade than most people face in a lifetime. I didn't learn this work from a textbook. I lived it — and kept building frameworks out of necessity because the ones that existed weren't made for bodies and brains like mine.</p>
+        <p class="body-copy">Through Sacred Disruption™, I've spent over a year publicly naming what it takes to stay present and sovereign inside imperfect systems — drawing on Black Feminist Thought, Disability Justice, somatic awareness, and decolonial frameworks. The Crossing™ is where that work becomes personal, strategic, and yours.</p>
+        <p class="body-copy" style="color:var(--terracotta); font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic; margin-top:32px;">I'm not here to fix you. You are not broken. I'm here to walk with you while you choose yourself — without disappearing in the process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq">
+  <div class="container">
+    <span class="section-label">Questions</span>
+    <h2 class="section-heading">What you <em>might</em> be wondering.</h2>
+
+    <div class="faq-item">
+      <p class="faq-q">Is this therapy?</p>
+      <p class="faq-a">No. The Crossing™ is coaching — which means we focus on your present experience, your strategies, your forward movement, and what you need to get to the other side of this transition whole. If you're in a place where you also need therapeutic support, I'll always say so and help you find it. This is a companion space, not a clinical one.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">What if I have a flare or a hard week and can't show up?</p>
+      <p class="faq-a">This container was built knowing that chronic illness and neurospicy minds don't follow a consistent schedule. Sessions can be rescheduled. The pace is adaptive. What we won't do is punish your body for existing the way it does.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">What kind of transitions does this support?</p>
+      <p class="faq-a">Career shifts, relocations, relationship changes, identity transitions, loss and grief, leaving harmful institutions, beginning new chapters, and any major life crossroads where you need grounded, strategic support to move through without losing yourself.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">How do I know if we're a good fit?</p>
+      <p class="faq-a">That's what the discovery call is for. 30 minutes. We talk. We both get honest about whether this is right. If it's not, I'll tell you — and I'll do my best to point you toward what actually is.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">When does the next round open?</p>
+      <p class="faq-a">Spots are limited and open on a rolling basis. Book your discovery call to find out what's currently available.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLOSING CTA ── -->
+<section class="closing" id="discovery">
+  <div class="container">
+    <p class="closing-text">
+      You don't have to figure this out <em>alone</em> anymore.
+    </p>
+    <p class="closing-sub">That was never the assignment. It was just what was available.</p>
+    <a href="https://calendly.com/fulei/the-crossing" target="_blank" rel="noopener" class="btn-primary">Book Your Free Discovery Call</a>
+    <span class="btn-note">30 minutes · No pressure · We'll know together if this is the right fit</span>
+    <div class="divider" style="margin-top: 64px;"></div>
+    <p style="font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; color:rgba(245,240,232,0.5); margin-top: 40px;">"Simply remembering to breathe becomes an act of resistance. You deserve more than that."</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p class="footer-name">Fulei Ngangmuta</p>
+  <p class="footer-sub" style="margin-top:8px;">The Crossing™ · Sacred Disruption™ · Ilwo Flow Collective</p>
+  <div style="display:flex; justify-content:center; gap:32px; margin-top:24px; flex-wrap:wrap;">
+    <a href="https://open.spotify.com/show/47vijpP8501QrPU5ApLFqn" target="_blank" rel="noopener"
+       style="font-size:12px; color:rgba(245,166,35,0.7); text-decoration:none; letter-spacing:0.15em; text-transform:uppercase; transition: color 0.2s ease;"
+       onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='rgba(245,166,35,0.7)'">
+      Sacred Disruption™ Podcast
+    </a>
+    <a href="https://calendly.com/fulei/the-crossing" target="_blank" rel="noopener"
+       style="font-size:12px; color:rgba(245,166,35,0.7); text-decoration:none; letter-spacing:0.15em; text-transform:uppercase; transition: color 0.2s ease;"
+       onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='rgba(245,166,35,0.7)'">
+      Book a Discovery Call
+    </a>
+    <a href="https://www.instagram.com/the.resourceful.liberator" target="_blank" rel="noopener"
+       style="font-size:12px; color:rgba(245,166,35,0.7); text-decoration:none; letter-spacing:0.15em; text-transform:uppercase; transition: color 0.2s ease;"
+       onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='rgba(245,166,35,0.7)'">
+      Instagram
+    </a>
+  </div>
+  <p class="footer-sub" style="margin-top:24px;">© 2026 · All rights reserved · The Crossing™ is a trademark of Ilwo Flow Collective LLC</p>
+</footer>
+
+</body>
+</html>
